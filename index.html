@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jasmin Kara — Dataanalytiker</title>
+<meta name="description" content="Portfölj för Jasmin Kara, dataanalytiker med grund i ekonomi, redovisning och lön.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#121513;
+    --paper-alt:#1C201C;
+    --ink:#EDE8DC;
+    --ink-soft:#9C9A8C;
+    --rule:#33362E;
+    --stamp:#D2764F;
+    --teal:#57B39E;
+    --max:820px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:17px;
+    line-height:1.6;
+  }
+  h1,h2,h3{
+    font-family:'IBM Plex Serif', serif;
+    font-weight:600;
+    margin:0;
+    line-height:1.2;
+  }
+  a{color:var(--stamp); text-decoration:none;}
+  a:hover, a:focus-visible{text-decoration:underline;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--teal); outline-offset:3px;}
+
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 24px;}
+
+  header.top{
+    padding:64px 0 40px;
+    border-bottom:1px solid var(--rule);
+  }
+  .eyebrow-line{
+    display:flex; align-items:center; gap:12px;
+    font-size:14px; color:var(--ink-soft); margin-bottom:28px;
+  }
+  .eyebrow-line .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);}
+  .eyebrow-line a{color:var(--ink-soft);}
+
+  h1.title{font-size:clamp(34px, 5vw, 52px); max-width:11ch;}
+  .swoosh{display:block; width:220px; height:14px; margin:14px 0 22px;}
+  .swoosh path{stroke:var(--stamp); stroke-width:3; fill:none; stroke-linecap:round;}
+
+  .lede{font-size:19px; max-width:56ch; color:var(--ink-soft); margin-top:8px;}
+
+  .stamp{
+    display:inline-flex; align-items:center; gap:10px;
+    margin-top:28px;
+    padding:10px 16px;
+    border:2px solid var(--stamp);
+    border-radius:4px;
+    color:var(--stamp);
+    font-family:'IBM Plex Serif', serif;
+    font-size:14px;
+    transform:rotate(-2deg) scale(1.15);
+    opacity:0;
+    animation:press .5s ease-out .2s forwards;
+  }
+  @keyframes press{
+    to{transform:rotate(-2deg) scale(1); opacity:1;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .stamp{animation:none; opacity:1;}
+  }
+
+  nav.jump{
+    display:flex; gap:24px; margin-top:36px; flex-wrap:wrap;
+    font-size:15px;
+  }
+  nav.jump a{color:var(--ink); border-bottom:1px solid transparent;}
+  nav.jump a:hover{border-bottom-color:var(--stamp); text-decoration:none;}
+
+  section{padding:56px 0; border-bottom:1px solid var(--rule);}
+  section:last-of-type{border-bottom:none;}
+  section h2{font-size:26px; margin-bottom:28px;}
+
+  .about p{max-width:64ch; margin:0 0 16px;}
+
+  .skillgrid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(210px,1fr));
+    gap:20px 32px; margin-top:8px;
+  }
+  .skillgrid div h3{font-size:15px; color:var(--teal); margin-bottom:6px; font-family:'IBM Plex Sans',sans-serif; font-weight:600;}
+  .skillgrid div p{margin:0; color:var(--ink-soft); font-size:15px;}
+
+  .ledger{border-top:1px solid var(--rule);}
+  .entry{
+    display:grid;
+    grid-template-columns:64px 1fr;
+    gap:20px;
+    padding:28px 0;
+    border-bottom:1px solid var(--rule);
+  }
+  .entry .num{
+    font-family:'IBM Plex Serif', serif;
+    color:var(--rule);
+    font-size:15px;
+    padding-top:4px;
+  }
+  .entry h3{font-size:20px; margin-bottom:4px;}
+  .entry .meta{font-size:14px; color:var(--ink-soft); margin-bottom:10px;}
+  .entry p{margin:0 0 10px; max-width:62ch;}
+  .entry .tools{font-size:13.5px; color:var(--teal);}
+  .entry .repolink{font-size:14px; display:inline-block; margin-top:4px;}
+
+  @media (max-width:520px){
+    .entry{grid-template-columns:32px 1fr;}
+  }
+
+  .badgerow{
+    display:flex; flex-wrap:wrap; gap:28px; margin-top:8px;
+  }
+  .badge{
+    display:flex; flex-direction:column; align-items:center;
+    width:140px; text-decoration:none;
+    transition:transform .15s ease;
+  }
+  .badge:hover, .badge:focus-visible{transform:translateY(-4px); text-decoration:none;}
+  .badge img{
+    width:120px; height:auto; display:block;
+  }
+  .badge span{
+    margin-top:10px; font-size:13.5px; text-align:center;
+    color:var(--ink-soft); line-height:1.4;
+  }
+  .badge:hover span, .badge:focus-visible span{color:var(--ink);}
+
+  footer.contact{
+    padding:56px 0 72px;
+  }
+  footer.contact h2{margin-bottom:16px;}
+  footer.contact p{max-width:52ch; color:var(--ink-soft); margin-bottom:24px;}
+  .contactlinks{display:flex; gap:28px; flex-wrap:wrap; font-size:16px;}
+  .copyright{margin-top:48px; font-size:13px; color:var(--ink-soft);}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="eyebrow-line">
+      <span class="dot"></span>
+      Stockholm, Sverige — <a href="mailto:jasmin.kara@hyperisland.se">jasmin.kara@hyperisland.se</a>
+    </div>
+
+    <h1 class="title">Jasmin Kara</h1>
+
+    <svg class="swoosh" viewBox="0 0 220 14" aria-hidden="true">
+      <path d="M2 10 C 40 2, 80 14, 120 6 S 200 2, 218 8"></path>
+    </svg>
+
+    <p class="lede">Dataanalytiker med arton år i ekonomi, lön och redovisning bakom sig — nu ombytt till SQL, Python och dashboards. Jag är van att stämma av siffror till sista kronan, och tar med mig samma noggrannhet in i dataanalysen.</p>
+
+    <span class="stamp">Data Analyst-diplom, Hyper Island, 2025</span>
+
+    <nav class="jump">
+      <a href="#om">Om mig</a>
+      <a href="#projekt">Projekt</a>
+      <a href="#certifikat">Certifikat</a>
+      <a href="#kompetens">Kompetens</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section id="om" class="about">
+    <div class="wrap">
+      <h2>Om mig</h2>
+      <p>Efter arton år som konsult, ekonom och löneansvarig inom bland annat fastighet, e-handel och bank bytte jag spår 2023 och läste Data Analyst-programmet på Hyper Island, följt av fördjupning på DataCamp. Det jag tar med mig är inte bara verktygen — SQL, Python, Tableau — utan vanan att lita på siffror, hitta fel innan de blir dyra, och förklara vad de faktiskt betyder för någon som inte jobbar med data till vardags.</p>
+      <p>Under praktiken hos AB Trav och Galopp designade jag A/B-tester för marknadsföringskampanjer och byggde rullande dashboards i Qlik. I ett konsultprojekt för Data Edge kartlade jag var i organisationen tiden faktiskt gick åt — och hittade en resurs värd 20 miljoner kronor som ingen sett tidigare. Det är den typen av arbete jag trivs bäst med: att gå från en stor, rörig datamängd till en insikt någon kan agera på.</p>
+    </div>
+  </section>
+
+  <section id="projekt">
+    <div class="wrap">
+      <h2>Utvalda projekt</h2>
+      <div class="ledger">
+
+        <div class="entry">
+          <div class="num">2025</div>
+          <div>
+            <h3>AB Trav och Galopp — sponsringsanalys</h3>
+            <div class="meta">Placement via Hyper Island, sep 2024 – mar 2025</div>
+            <p>Designade enkätfrågor enligt Effektsystemet med Likert-skala för kontroll- och experimentgrupp. Rensade och strukturerade enkätdata, körde A/B-tester och t-tester för att mäta kampanjeffekt, och byggde 13-veckors rullande dashboards i Qlik för sponsringsuppföljning inom trav, sportbetting och casino. Presenterade insikter direkt till marknadsföringsteamet.</p>
+            <div class="tools">SPSS · Python · Excel · Qlik · BigQuery · GA4 · Looker</div>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="num">2024</div>
+          <div>
+            <h3>Data Edge — resursanalys hos konsultbolag</h3>
+            <div class="meta">Klientprojekt via Hyper Island</div>
+            <p>Extraherade data från fyra system — HubSpot, Notion, Fortnox och Clockify — och transformerade den i Python för att jämföra projektplanering mot faktiska tidrapporter. Upptäckte att över 40 % av tiden var icke-fakturerbar, vilket motsvarade en låst affärsmöjlighet på 20 miljoner kronor. Insikten låg till grund för bolagets strategi för att frigöra tid till sälj.</p>
+            <div class="tools">Python · SQL · Tableau</div>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="num">2024</div>
+          <div>
+            <h3>Akademiska Hus — sensordata från 5+ miljoner rader</h3>
+            <div class="meta">Klientprojekt via Hyper Island</div>
+            <p>Analyserade koldioxidhalt, rumstemperatur och beläggning från IoT-sensorer och bokningssystem över flera campusbyggnader. Rensade datan i Python och visualiserade den i Tableau för att optimera energiförbrukning och inomhusklimat.</p>
+            <div class="tools">Python · SQL · Tableau · Power BI</div>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="num">2023</div>
+          <div>
+            <h3>Alequi — konverteringsanalys, e-handel</h3>
+            <div class="meta">Klientprojekt via Hyper Island</div>
+            <p>Analyserade beteendedata från omkring 100 000 internationella besökare i en ridsportbutik för att identifiera var i köpresan kunder föll bort, och lämnade rekommendationer för att optimera butiken.</p>
+            <div class="tools">Google Analytics · Shopify · SimilarWeb · Wappalyzer</div>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="num">Kod</div>
+          <div>
+            <h3>Kursprojekt på GitHub</h3>
+            <div class="meta">Individuella och gruppuppgifter, Hyper Island</div>
+            <p>Tre öppna repositories som visar grunderna: ett ETL-flöde i Python mot Snowflake, ett SQL-tungt gruppprojekt med individuella queries, samt ett projekt om A/B-testning och t-tester i Jupyter Notebook.</p>
+            <div class="tools">Python · SQL · Snowflake · Jupyter Notebook</div>
+            <a class="repolink" href="https://github.com/jasmikar" target="_blank" rel="noopener">Se koden på github.com/jasmikar →</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="certifikat">
+    <div class="wrap">
+      <h2>Certifikat</h2>
+      <div class="badgerow">
+        <a class="badge" href="https://www.datacamp.com/certificate/DAA0013162635783" target="_blank" rel="noopener">
+          <img src="images/badge-data-analyst.png" alt="Data Analyst Associate badge">
+          <span>Data Analyst<br>aug 2025</span>
+        </a>
+        <a class="badge" href="https://www.datacamp.com/certificate/DEA0011036376536" target="_blank" rel="noopener">
+          <img src="images/badge-data-engineer.png" alt="Data Engineer Associate badge">
+          <span>Data Engineer<br>sep 2025</span>
+        </a>
+        <a class="badge" href="https://www.datacamp.com/certificate/DSA0010893395474" target="_blank" rel="noopener">
+          <img src="images/badge-data-scientist.png" alt="Data Scientist Associate badge">
+          <span>Data Scientist<br>sep 2025</span>
+        </a>
+        <a class="badge" href="https://www.datacamp.com/certificate/SQA0017876512126" target="_blank" rel="noopener">
+          <img src="images/badge-sql.png" alt="SQL Associate badge">
+          <span>SQL<br>okt 2025</span>
+        </a>
+        <a class="badge" href="https://www.datacamp.com/certificate/PDA0015070694364" target="_blank" rel="noopener">
+          <img src="images/badge-python.png" alt="Python Data Associate badge">
+          <span>Python Data<br>okt 2025</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="kompetens">
+    <div class="wrap">
+      <h2>Kompetens</h2>
+      <div class="skillgrid">
+        <div>
+          <h3>Data & querying</h3>
+          <p>SQL, Python, Snowflake, PostgreSQL, Microsoft Fabric</p>
+        </div>
+        <div>
+          <h3>BI & visualisering</h3>
+          <p>Tableau, Power BI, Looker, Qlik, Excel</p>
+        </div>
+        <div>
+          <h3>Analys & statistik</h3>
+          <p>A/B-testning, t-tester, rullande medelvärden, KPI-ramverk, OKR</p>
+        </div>
+        <div>
+          <h3>Ekonomi & domän</h3>
+          <p>Redovisning, leverantörs-/kundreskontra, lön, moms & skatterapportering</p>
+        </div>
+        <div>
+          <h3>Verktyg & plattformar</h3>
+          <p>Git, GitHub, VS Code, Jupyter Notebook, Google Analytics, Mixpanel</p>
+        </div>
+        <div>
+          <h3>Språk</h3>
+          <p>Svenska, engelska, tyska</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="contact" id="kontakt">
+  <div class="wrap">
+    <h2>Hör av dig</h2>
+    <p>Jag söker just nu roller inom dataanalys där ekonomibakgrund och nyfikenhet på data möts. Skriv gärna om du vill prata vidare.</p>
+    <div class="contactlinks">
+      <a href="mailto:jasmin.kara@hyperisland.se">E-post</a>
+      <a href="https://www.linkedin.com/in/jask" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/jasmikar" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <p class="copyright">© 2026 Jasmin Kara</p>
+  </div>
+</footer>
+
+</body>
+</html>

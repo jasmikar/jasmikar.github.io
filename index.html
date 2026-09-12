@@ -55,6 +55,31 @@
   header.hero{padding:80px 0 48px;}
   .eyebrow{color:var(--text-soft); font-size:15px; margin-bottom:14px;}
   h1.title{font-size:clamp(32px,5vw,46px); font-weight:700; max-width:16ch;}
+  .rotating-role{
+    font-family:'Poppins', sans-serif;
+    font-weight:600;
+    font-size:clamp(20px,3vw,28px);
+    margin-top:10px;
+    min-height:1.4em;
+    display:flex; align-items:center;
+  }
+  .rotating-role .word{
+    background:linear-gradient(90deg, var(--grad-a), var(--grad-b));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .rotating-role .cursor{
+    display:inline-block;
+    width:2px; height:1em;
+    background:var(--grad-b);
+    margin-left:4px;
+    animation:blink 1s step-end infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+  @media (prefers-reduced-motion: reduce){
+    .rotating-role .cursor{animation:none;}
+  }
   p.tagline{color:var(--text-soft); font-size:19px; max-width:52ch; margin-top:18px;}
 
   .btnrow{display:flex; gap:16px; flex-wrap:wrap; margin-top:32px;}
@@ -158,8 +183,9 @@
 
 <header class="hero" id="home">
   <div class="wrap">
-    <p class="eyebrow">Sweden</p>
+    <p class="eyebrow">Stockholm, Sweden</p>
     <h1 class="title">Hello, I'm Jasmin</h1>
+    <p class="rotating-role"><span class="word" id="rotating-word">Data Analyst</span><span class="cursor"></span></p>
     <p class="tagline">I am a Data Analyst with 15y+ of background in payroll and accounting — now working with SQL, Python and dashboards to turn data into decisions.</p>
 
     <div class="btnrow">
@@ -209,7 +235,7 @@
                 <li>SQL, Python, Snowflake, PostgreSQL</li>
                 <li>Tableau, Looker, Qlik, Power BI</li>
                 <li>A/B testing, t-tests, KPI frameworks</li>
-                <li>Excel, Google Analytics, Mixpanel, LuckyOrange, Hotjar</li>
+                <li>Excel, Google Analytics, Mixpanel</li>
               </ul>
             </div>
             <div style="margin-top:20px;">
@@ -302,9 +328,49 @@
       <a href="https://www.linkedin.com/in/jask" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://github.com/jasmikar" target="_blank" rel="noopener">GitHub</a>
     </div>
-    <p class="copyright">© Jasmin's Portfolio</p>
+    <p class="copyright">© Jasmin</p>
   </div>
 </footer>
+
+<script>
+  const roles = ["Data Analyst", "Payroll Specialist", "Accountant"];
+  const el = document.getElementById('rotating-word');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (prefersReduced) {
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % roles.length;
+      el.textContent = roles[i];
+    }, 2000);
+  } else {
+    let roleIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+
+    function tick() {
+      const current = roles[roleIndex];
+      if (!deleting) {
+        charIndex++;
+        el.textContent = current.slice(0, charIndex);
+        if (charIndex === current.length) {
+          deleting = true;
+          setTimeout(tick, 1400);
+          return;
+        }
+      } else {
+        charIndex--;
+        el.textContent = current.slice(0, charIndex);
+        if (charIndex === 0) {
+          deleting = false;
+          roleIndex = (roleIndex + 1) % roles.length;
+        }
+      }
+      setTimeout(tick, deleting ? 40 : 80);
+    }
+    tick();
+  }
+</script>
 
 <script>
   const filters = document.querySelectorAll('.filter');

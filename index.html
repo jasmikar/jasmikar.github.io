@@ -20,7 +20,17 @@
     --accent:#8B6CF1;
   }
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html{
+    scroll-behavior:smooth;
+    /* The nav is position:sticky, so without this an anchor target lands flush
+       with the viewport top and the nav covers its heading. --nav-h is kept in
+       sync with the real nav height in JS. */
+    scroll-padding-top:calc(var(--nav-h, 63px) + 24px);
+  }
+  /* Smooth scrolling is a vestibular trigger for some people. */
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
   body{
     margin:0;
     background:var(--bg);
@@ -55,21 +65,25 @@
   header.hero{padding:80px 0 48px;}
   .eyebrow{color:var(--text-soft); font-size:15px; margin-bottom:14px;}
   h1.title{font-size:clamp(32px,5vw,46px); font-weight:700; max-width:16ch;}
-  html, body{overflow-x:hidden;}
   .rotating-role{
     font-family:'Poppins', sans-serif;
     font-weight:600;
     font-size:clamp(20px,3vw,28px);
-    line-height:1;
     margin-top:10px;
-    margin-bottom:0;
-    height:40px;
+    /* line-height and min-height must agree: .word is blockified as a flex item,
+       so when it is empty its height collapses to 0 and the line would snap down
+       to min-height, shifting everything below it. */
+    line-height:1.6;
+    min-height:1.6em;
     display:flex; align-items:center;
-    white-space:nowrap;
-    overflow:hidden;
   }
   .rotating-role .word{
     background:linear-gradient(90deg, var(--grad-a), var(--grad-b));
+    /* Pin the gradient to a fixed box. Without this it spans the span's own
+       width, which grows with every typed character, so already-typed letters
+       shift hue on each tick. --word-w is measured once in JS. */
+    background-size: var(--word-w, 12em) 100%;
+    background-repeat: no-repeat;
     -webkit-background-clip:text;
     background-clip:text;
     color:transparent;
@@ -81,9 +95,16 @@
     margin-left:4px;
     animation:blink 1s step-end infinite;
   }
+  /* While characters are being typed or deleted the caret holds solid, like a
+     real terminal; it only blinks during the pause at the end of a word. */
+  .rotating-role.is-typing .cursor{animation:none; opacity:1;}
   @keyframes blink{50%{opacity:0;}}
   @media (prefers-reduced-motion: reduce){
     .rotating-role .cursor{animation:none;}
+  }
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
   }
   p.tagline{color:var(--text-soft); font-size:19px; max-width:52ch; margin-top:18px;}
 
@@ -190,7 +211,8 @@
   <div class="wrap">
     <p class="eyebrow">Sweden</p>
     <h1 class="title">Hello, I'm Jasmin</h1>
-    <p class="rotating-role"><span class="word" id="rotating-word">Data Analyst</span><span class="cursor"></span></p>
+    <p class="rotating-role" aria-hidden="true"><span class="word" id="rotating-word">Data Analyst</span><span class="cursor"></span></p>
+    <p class="sr-only">Data Analyst, Payroll Specialist, Accountant</p>
     <p class="tagline">I am a Data Analyst with 15y+ of background in payroll and accounting, now working with SQL, Python and dashboards to turn data into decisions.</p>
 
     <div class="btnrow">
@@ -235,7 +257,7 @@
           With over fifteen years of experience in accounting and payroll operations across e-commerce, real estate, and construction, 
           I recently expanded my skillset into data analytics to bridge the gap between financial operations and modern data insights. 
           In 2023, I completed the Data Analytics program at Hyper Island and earned advanced certifications through DataCamp. 
-          By combining deep domain expertise in financial processes with analytical tools, I bring the same rigor used in account reconciliations to complex datasets, 
+          By combining deep domain expertise in financial processes with analytical tools, I bring the same rigor used in account reconciliations to complex datasets,
           identifying discrepancies early, optimizing operational efficiency, and translating raw numbers into clear, actionable business strategies.
         </p>
         <div>
@@ -246,7 +268,7 @@
                 <li>SQL, Python, Snowflake, PostgreSQL</li>
                 <li>Tableau, Looker, Qlik, Power BI, Excel</li>
                 <li>A/B testing, t-tests, KPI frameworks</li>
-                <li>Excel, Google Analytics, Mixpanel, LuckyOrange, Hotjar</li>
+                <li>Google Analytics, Mixpanel, LuckyOrange, Hotjar</li>
               </ul>
             </div>
             <div style="margin-top:20px;">
@@ -282,44 +304,44 @@
       <div class="projectgrid">
 
         <div class="card" data-cat="tableau python sql">
-          <h3>AB Trav och Galopp — Sponsorship Analytics · Horse Racing, Gambling & Casino Industry</h3>
+          <h3>AB Trav och Galopp · Horse Racing, Gambling & Casino Industry — Sponsorship Analytics</h3>
           <div class="meta">Hyper Island Placement</div>
           <p>Designed Likert-scale surveys for control/experiment groups, ran A/B tests and t-tests to measure campaign impact, and built 13-week rolling average dashboards in Qlik for sponsorship tracking across horse racing, sports betting and casino gaming.</p>
-          <div class="tools">SPSS · Excel · PowerPoint · Qlik</div>
+          <div class="tools">SPSS · Qlik · Excel · PowerPoint</div>
         </div>
 
         <div class="card" data-cat="python tableau sql">
-          <h3>Data Edge — Resource Utilization Analysis · Data & Analytics Consulting</h3>
+          <h3>Data Edge · Data & Analytics Consulting — Resource Utilization Analysis</h3>
           <div class="meta">Client Project via Hyper Island</div>
           <p>Data extracted from HubSpot, Notion, Fortnox and Clockify. Transformed it in Python, modeled and visualized it in Tableau. Uncovered that non-billable hours exceeded a siginifcant portion of total time, representing a M SEK opportunity cost.</p>
           <div class="tools">Python · SQL · Tableau · Excel</div>
         </div>
 
         <div class="card" data-cat="python tableau sql">
-          <h3>Akademiska Hus — IoT Sensor Analysis · State-Owned Real Estate Company</h3>
+          <h3>Akademiska Hus · State-Owned Real Estate Company — IoT Sensor Analysis</h3>
           <div class="meta">Client Project via Hyper Island</div>
           <p>Analyzed M+ rows of CO2, temperature and occupancy data from IoT sensors and booking systems across campus buildings. Cleaned the data in Python and visualized it in Tableau to optimize energy consumption.</p>
           <div class="tools">Python · SQL · Tableau · Excel</div>
         </div>
 
         <div class="card" data-cat="all">
-          <h3>Alequi — E-commerce Conversion Analysis · Equestrian Retail Company</h3>
+          <h3>Alequi · Equestrian Retail Company — E-commerce Conversion Analysis</h3>
           <div class="meta">Client Project via Hyper Island</div>
           <p>Analyzed behavioral data from around 100K+ international visitors to an equestrian retail store to identify where customers dropped off in the purchase journey.</p>
-          <div class="tools">Google Analytics · Shopify · SimilarWeb</div>
+          <div class="tools">Google Analytics · Shopify · SimilarWeb · LuckyOrange · Hotjar</div>
         </div>
 
         <div class="card" data-cat="all">
-          <h3>Joina — App User Journey Analysis · Health and Fitness App Company</h3>
+          <h3>Joina · Health and Fitness App Company — App User Journey Analysis</h3>
           <div class="meta">Client Project via Hyper Island</div>
           <p>Analyzed user journeys and app data using Mixpanel and AppsFlyer to help the company understand why users stop using their app, uncovering patterns to inform product improvements.</p>
-          <div class="tools">Mixpanel · AppsFlyer · Excel</div>
+          <div class="tools">Mixpanel · AppsFlyer · Value Proposition & Business Model Canvas · OKR & KPI </div>
         </div>
 
         <div class="card" data-cat="python sql">
           <h3>Course Projects on GitHub</h3>
           <div class="meta">Individual & group assignments, Hyper Island</div>
-          <p>Three open repositories: a Python ETL pipeline into Snowflake, a SQL-heavy group project with individual queries, and an A/B testing & t-test analysis in Jupyter Notebook.</p>
+          <p>Three open repositories: a Python ETL pipeline ingesting song data into Snowflake, a SQL-focused group project on weather analysis featuring individual queries, and a Jupyter Notebook with A/B testing and t-test analysis on cooking equipment.</p>
           <div class="tools">Python · SQL · Snowflake · Jupyter Notebook</div>
           <a class="repo" href="https://github.com/jasmikar" target="_blank" rel="noopener">View code on GitHub →</a>
         </div>
@@ -339,48 +361,137 @@
       <a href="https://www.linkedin.com/in/jask" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://github.com/jasmikar" target="_blank" rel="noopener">GitHub</a>
     </div>
-    <p class="copyright">© Jasmin's portfolio</p>
+    <p class="copyright">© Jasmin's Portfolio</p>
   </div>
 </footer>
 
 <script>
+(async () => {
   const roles = ["Data Analyst", "Payroll Specialist", "Accountant"];
   const el = document.getElementById('rotating-word');
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const line = el.closest('.rotating-role');
+  const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  if (prefersReduced) {
+  const TYPE_MS = 83;
+  const DEL_MS  = 50;
+  const HOLD_MS = 1400;
+
+  // Webfonts first: this both keeps the Poppins swap from re-shaping the line
+  // mid-animation and makes the width measurement below correct.
+  if (document.fonts && document.fonts.ready) {
+    await Promise.race([
+      document.fonts.ready,
+      new Promise(r => setTimeout(r, 3000))
+    ]);
+  }
+
+  // Measure the widest role once and pin the gradient to it (--word-w above).
+  function measureWidth() {
+    const restore = el.textContent;
+    el.textContent = roles.reduce((a, b) => (a.length > b.length ? a : b));
+    el.style.setProperty('--word-w', el.getBoundingClientRect().width + 'px');
+    el.textContent = restore;
+  }
+  measureWidth();
+  addEventListener('resize', measureWidth);
+
+  // A DOM change is only painted at the next vsync, so a per-character delay
+  // that is not a whole number of frames lands unevenly -- the old 80ms is 4.8
+  // frames at 60Hz, which drops a short frame every ~5 characters. Measure the
+  // real frame interval once, convert each delay to a whole frame count, then
+  // drive the animation by counting frames. Even on a 120Hz display every
+  // character then lands on an exact frame boundary.
+  function measureFrameMs() {
+    return new Promise(resolve => {
+      const deltas = [];
+      let prev = null, n = 0;
+      // If the tab is hidden, rAF never fires -- fall back to 60Hz.
+      const bail = setTimeout(() => resolve(1000 / 60), 1000);
+      requestAnimationFrame(function probe(t) {
+        if (prev !== null) deltas.push(t - prev);
+        prev = t;
+        if (++n < 12) return requestAnimationFrame(probe);
+        clearTimeout(bail);
+        deltas.sort((a, b) => a - b);
+        const median = deltas[deltas.length >> 1];
+        resolve(median > 1 && median < 100 ? median : 1000 / 60);
+      });
+    });
+  }
+  const frameMs = await measureFrameMs();
+  const frames = ms => Math.max(1, Math.round(ms / frameMs));
+  const TYPE_F = frames(TYPE_MS), DEL_F = frames(DEL_MS), HOLD_F = frames(HOLD_MS);
+
+  let reducedTimer = null, rafId = null;
+
+  function stopAll() {
+    if (reducedTimer !== null) { clearInterval(reducedTimer); reducedTimer = null; }
+    if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+    line.classList.remove('is-typing');
+  }
+
+  function runReduced() {
     let i = 0;
-    setInterval(() => {
+    el.textContent = roles[0];
+    reducedTimer = setInterval(() => {
       i = (i + 1) % roles.length;
       el.textContent = roles[i];
     }, 2000);
-  } else {
-    let roleIndex = 0;
-    let charIndex = 0;
-    let deleting = false;
+  }
 
-    function tick() {
+  function runTypewriter() {
+    let roleIndex = 0, charIndex = 0, deleting = false, framesLeft = 1;
+    // A zero-width space keeps the block from collapsing to height 0 at
+    // charIndex === 0, which would otherwise jolt the whole page up by ~6px.
+    const render = s => { el.textContent = s.length ? s : '\u200B'; };
+    render('');
+
+    function step() {
       const current = roles[roleIndex];
       if (!deleting) {
-        charIndex++;
-        el.textContent = current.slice(0, charIndex);
-        if (charIndex === current.length) {
-          deleting = true;
-          setTimeout(tick, 1400);
-          return;
-        }
-      } else {
-        charIndex--;
-        el.textContent = current.slice(0, charIndex);
-        if (charIndex === 0) {
-          deleting = false;
-          roleIndex = (roleIndex + 1) % roles.length;
-        }
+        render(current.slice(0, ++charIndex));
+        if (charIndex === current.length) { deleting = true; return HOLD_F; }
+        return TYPE_F;
       }
-      setTimeout(tick, deleting ? 40 : 80);
+      render(current.slice(0, --charIndex));
+      if (charIndex === 0) {
+        deleting = false;
+        roleIndex = (roleIndex + 1) % roles.length;
+      }
+      return DEL_F;
     }
-    tick();
+
+    function frame() {
+      if (--framesLeft <= 0) {
+        framesLeft = step();
+        line.classList.toggle('is-typing', framesLeft !== HOLD_F);
+      }
+      rafId = requestAnimationFrame(frame);
+    }
+    rafId = requestAnimationFrame(frame);
   }
+
+  function start() {
+    stopAll();
+    if (mq.matches) runReduced(); else runTypewriter();
+  }
+
+  mq.addEventListener('change', start);
+  start();
+})();
+</script>
+
+<script>
+  // Keep scroll-padding-top matched to the sticky nav at any width or zoom.
+  (() => {
+    const nav = document.querySelector('nav.topnav');
+    if (!nav) return;
+    const sync = () => document.documentElement.style
+      .setProperty('--nav-h', nav.getBoundingClientRect().height + 'px');
+    sync();
+    if (window.ResizeObserver) new ResizeObserver(sync).observe(nav);
+    else addEventListener('resize', sync);
+  })();
 </script>
 
 <script>
@@ -399,7 +510,5 @@
   });
 </script>
 
-<script data-goatcounter="https://jasmikar.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
